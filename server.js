@@ -1,8 +1,14 @@
 const express = require('express');
+const connectDB = require('./config/db');
 
 const app = express();
 
-app.get('/', (req, res) => res.send('Hello World!'));
+// Connect Database
+connectDB();
+
+app.get('/', (req, res) =>
+  res.json({ msg: 'Welcome to Contact Manager app.' })
+);
 
 // Define Routes
 app.use('/api/users', require('./routes/users'));
