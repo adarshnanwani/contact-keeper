@@ -22,12 +22,21 @@ const contactReducer = (state, action) => {
           (contact) => contact.id !== action.payload
         ),
       };
+    case UPDATE_CONTACT:
+      const contactsCopy = state.contacts.map((contact) => {
+        if (contact.id === action.payload.id) {
+          contact = action.payload;
+        }
+        return contact;
+      });
+      return {
+        ...state,
+        contacts: contactsCopy,
+      };
     case SET_CURRENT:
       return {
         ...state,
-        current: state.contacts.find(
-          (contact) => contact.id === action.payload
-        ),
+        current: action.payload,
       };
     case CLEAR_CURRENT:
       return {
