@@ -4,13 +4,22 @@ import ContactContext from '../../context/contact/contactContext';
 const ContactForm = () => {
   const contactContext = useContext(ContactContext);
 
-  const [contact, setContact] = useState({
+  const [contact, setContact, current] = useState({
     name: '',
     email: '',
     phone: '',
     type: 'personal',
   });
   const { name, email, phone, type } = contact;
+  if (current) {
+    setContact({
+      name: current.name,
+      email: current.email,
+      phone: current.phone,
+      type: current.type,
+      id: current.id,
+    });
+  }
 
   const onChange = (e) =>
     setContact({ ...contact, [e.target.name]: e.target.value });
