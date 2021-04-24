@@ -1,19 +1,29 @@
 import {
+  GET_CONTACTS,
   ADD_CONTACT,
   DELETE_CONTACT,
   SET_CURRENT,
   CLEAR_CURRENT,
+  CLEAR_CONTACTS,
   UPDATE_CONTACT,
   FILTER_CONTACTS,
   CLEAR_FILTER,
+  CONTACT_ERROR,
 } from '../types';
 
 const contactReducer = (state, action) => {
   switch (action.type) {
+    case GET_CONTACTS:
+      return {
+        ...state,
+        contacts: action.payload,
+        loading: false,
+      };
     case ADD_CONTACT:
       return {
         ...state,
         contacts: [...state.contacts, action.payload],
+        loading: false,
       };
     case DELETE_CONTACT:
       return {
@@ -21,6 +31,7 @@ const contactReducer = (state, action) => {
         contacts: state.contacts.filter(
           (contact) => contact.id !== action.payload
         ),
+        loading: false,
       };
     case UPDATE_CONTACT:
       const contactsCopy = state.contacts.map((contact) => {
@@ -32,6 +43,16 @@ const contactReducer = (state, action) => {
       return {
         ...state,
         contacts: contactsCopy,
+        loading: false,
+      };
+
+    case CLEAR_CONTACTS:
+      return {
+        ...state,
+        contacts: null,
+        current: null,
+        filtered: null,
+        error: null,
       };
     case FILTER_CONTACTS:
       return {
@@ -40,6 +61,7 @@ const contactReducer = (state, action) => {
           const regex = new RegExp(`${action.payload}`, 'gi');
           return contact.name.match(regex) || contact.email.match(regex);
         }),
+        loading: false,
       };
     case CLEAR_FILTER:
       return {
@@ -55,6 +77,12 @@ const contactReducer = (state, action) => {
       return {
         ...state,
         current: null,
+      };
+    case CONTACT_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        loading: false,
       };
     default:
       return { ...state };
